@@ -33,14 +33,14 @@ public class Ball_Movement : MonoBehaviour
     }
 
     private void Move()
-    {
-        float inputValue = input.HorizontalInput;
+{
+    float inputValue = input.HorizontalInput;
 
+    if (Mathf.Abs(inputValue) > 0.01f)
+    {
         float targetSpeed = inputValue * ballData.maxMoveSpeed;
 
-        float acceleration = Mathf.Abs(inputValue) > 0.01f
-            ? ballData.acceleration
-            : ballData.deceleration;
+        float acceleration = ballData.acceleration;
 
         if (!groundCheck.IsGrounded)
         {
@@ -57,7 +57,40 @@ public class Ball_Movement : MonoBehaviour
             newVelocityX,
             ballRigidbody.linearVelocity.y
         );
+
+        return;
     }
+
+    ApplySmoothDeceleration();
+}
+
+private void ApplySmoothDeceleration()
+{
+    float currentSpeed = ballRigidbody.linearVelocity.x;
+
+    float deceleration = ballData.deceleration;
+
+    if (!groundCheck.IsGrounded)
+    {
+        deceleration *= ballData.airControl;
+    }
+
+    float newSpeed = Mathf.Lerp(
+        currentSpeed,
+        0f,
+        deceleration * Time.fixedDeltaTime
+    );
+
+    if (Mathf.Abs(newSpeed) < 0.02f)
+    {
+        newSpeed = 0f;
+    }
+
+    ballRigidbody.linearVelocity = new Vector2(
+        newSpeed,
+        ballRigidbody.linearVelocity.y
+    );
+}
 
     private bool IsReady()
     {
