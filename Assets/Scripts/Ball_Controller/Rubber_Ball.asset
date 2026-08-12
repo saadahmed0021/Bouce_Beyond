@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8251e326cd91ebb498ffe3819e508624, type: 3}
+  m_Name: Rubber_Ball
+  m_EditorClassIdentifier: Assembly-CSharp::Ball_Data
+  maxMoveSpeed: 8
+  acceleration: 25
+  deceleration: 1
+  airControl: 0.7
+  torqueForce: 5
+  maxAngularVelocity: 150
+  jumpForce: 12
+  gravityScale: 3
+  groundFriction: 0.8
+  groundCheckRadius: 5.85
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  maxFallSpeed: 20
+  coyoteTime: 0.1
+  jumpBufferTime: 0.1
