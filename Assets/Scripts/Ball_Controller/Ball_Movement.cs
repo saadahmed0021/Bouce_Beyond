@@ -68,20 +68,13 @@ private void ApplySmoothDeceleration()
 {
     float currentSpeed = ballRigidbody.linearVelocity.x;
 
-    float deceleration = ballData.deceleration;
-
-    if (!groundCheck.IsGrounded)
-    {
-        deceleration *= ballData.airControl;
-    }
-
-    float newSpeed = Mathf.Lerp(
+    float newSpeed = Mathf.MoveTowards(
         currentSpeed,
         0f,
-        deceleration * Time.fixedDeltaTime
+        ballData.deceleration * Time.fixedDeltaTime
     );
 
-    if (Mathf.Abs(newSpeed) < 0.02f)
+    if (Mathf.Abs(newSpeed) < 0.01f)
     {
         newSpeed = 0f;
     }

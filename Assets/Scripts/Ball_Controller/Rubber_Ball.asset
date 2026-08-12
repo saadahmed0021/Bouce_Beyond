@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8251e326cd91ebb498ffe3819e508624, type: 3}
   m_Name: Rubber_Ball
   m_EditorClassIdentifier: Assembly-CSharp::Ball_Data
-  maxMoveSpeed: 8
-  acceleration: 25
-  deceleration: 1
+  maxMoveSpeed: 5
+  acceleration: 15
+  deceleration: 1.58
   airControl: 0.7
   torqueForce: 5
   maxAngularVelocity: 150
   jumpForce: 12
   gravityScale: 3
   groundFriction: 0.8
-  groundCheckRadius: 5.85
+  groundCheckRadius: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
