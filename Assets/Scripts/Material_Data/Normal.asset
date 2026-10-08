@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e236d0a021f8fb144929f3f0ddeda8f7, type: 3}
+  m_Name: Normal
+  m_EditorClassIdentifier: Assembly-CSharp::MaterialShift.Ball_Material_Data
+  materialType: 0
+  physicsMaterial: {fileID: 6200000, guid: 89a29e753047241438513f8a3e2efda0, type: 2}
+  movementMultiplier: 1
+  maxSpeedMultiplier: 1
+  accelerationMultiplier: 1
+  decelerationMultiplier: 1
+  jumpMultiplier: 1

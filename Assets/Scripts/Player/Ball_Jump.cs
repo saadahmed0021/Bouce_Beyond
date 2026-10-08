@@ -19,6 +19,7 @@ namespace MaterialShift.Player
         private Rigidbody2D ballRigidbody;
         private Ball_Input ballInput;
         private Ball_Ground_Check groundCheck;
+        private Ball_Material_Controller ballMaterialController;
 
         private float jumpBufferRemaining;
         private float coyoteRemaining;
@@ -29,6 +30,7 @@ namespace MaterialShift.Player
             ballRigidbody = GetComponent<Rigidbody2D>();
             ballInput = GetComponent<Ball_Input>();
             groundCheck = GetComponent<Ball_Ground_Check>();
+            ballMaterialController = GetComponent<Ball_Material_Controller>();
         }
 
         private void Update()
@@ -69,7 +71,12 @@ namespace MaterialShift.Player
         private void PerformJump()
         {
             float horizontalVelocity = ballRigidbody.linearVelocity.x;
-            ballRigidbody.linearVelocity = new Vector2(horizontalVelocity, jumpVelocity);
+            float jumpMultiplier = ballMaterialController != null
+                ? ballMaterialController.CurrentJumpMultiplier
+                : 1f;
+            ballRigidbody.linearVelocity = new Vector2(
+                horizontalVelocity,
+                jumpVelocity * jumpMultiplier);
 
             jumpBufferRemaining = 0f;
             coyoteRemaining = 0f;

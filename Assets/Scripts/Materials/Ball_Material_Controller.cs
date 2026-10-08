@@ -1,0 +1,75 @@
+using UnityEngine;
+
+namespace MaterialShift
+{
+    public class Ball_Material_Controller : MonoBehaviour
+    {
+        [SerializeField] private Ball_Material_Data currentMaterialData;
+        [SerializeField] private Ball_Material_Data[] availableMaterialData;
+
+        private CircleCollider2D circleCollider;
+
+        public Ball_Material_Data CurrentMaterialData { get; private set; }
+        public Material_Type CurrentMaterialType { get; private set; }
+        public float CurrentMovementMultiplier => CurrentMaterialData?.MovementMultiplier ?? 1f;
+        public float CurrentMaxSpeedMultiplier => CurrentMaterialData?.MaxSpeedMultiplier ?? 1f;
+        public float CurrentAccelerationMultiplier => CurrentMaterialData?.AccelerationMultiplier ?? 1f;
+        public float CurrentDecelerationMultiplier => CurrentMaterialData?.DecelerationMultiplier ?? 1f;
+        public float CurrentJumpMultiplier => CurrentMaterialData?.JumpMultiplier ?? 1f;
+
+        private void Awake()
+        {
+            circleCollider = GetComponent<CircleCollider2D>();
+            CurrentMaterialData = currentMaterialData;
+            CurrentMaterialType = CurrentMaterialData?.MaterialType ?? default;
+
+            ApplyCurrentMaterial();
+        }
+
+        public void ChangeMaterial(Material_Type materialType)
+        {
+            if (availableMaterialData == null)
+            {
+                return;
+            }
+
+            Ball_Material_Data requestedMaterialData = null;
+
+            for (int index = 0; index < availableMaterialData.Length; index++)
+            {
+                Ball_Material_Data materialData = availableMaterialData[index];
+
+                if (materialData != null && materialData.MaterialType == materialType)
+                {
+                    requestedMaterialData = materialData;
+                    break;
+                }
+            }
+
+            if (requestedMaterialData == null || requestedMaterialData == CurrentMaterialData)
+            {
+                return;
+            }
+
+            CurrentMaterialData = requestedMaterialData;
+            CurrentMaterialType = requestedMaterialData.MaterialType;
+            ApplyCurrentMaterial();
+        }
+
+        private void ApplyCurrentMaterial()
+        {
+            if (circleCollider == null || CurrentMaterialData == null ||
+                CurrentMaterialData.PhysicsMaterial == null)
+            {
+                return;
+            }
+
+            if (circleCollider.sharedMaterial == CurrentMaterialData.PhysicsMaterial)
+            {
+                return;
+            }
+
+            circleCollider.sharedMaterial = CurrentMaterialData.PhysicsMaterial;
+        }
+    }
+}
