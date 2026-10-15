@@ -8,6 +8,7 @@ namespace MaterialShift
         [SerializeField] private Ball_Material_Data[] availableMaterialData;
 
         private CircleCollider2D circleCollider;
+        private SpriteRenderer spriteRenderer;
 
         public Ball_Material_Data CurrentMaterialData { get; private set; }
         public Material_Type CurrentMaterialType { get; private set; }
@@ -20,6 +21,7 @@ namespace MaterialShift
         private void Awake()
         {
             circleCollider = GetComponent<CircleCollider2D>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
             CurrentMaterialData = currentMaterialData;
             CurrentMaterialType = CurrentMaterialData?.MaterialType ?? default;
 
@@ -58,18 +60,21 @@ namespace MaterialShift
 
         private void ApplyCurrentMaterial()
         {
-            if (circleCollider == null || CurrentMaterialData == null ||
-                CurrentMaterialData.PhysicsMaterial == null)
+            if (CurrentMaterialData == null)
             {
                 return;
             }
 
-            if (circleCollider.sharedMaterial == CurrentMaterialData.PhysicsMaterial)
+            if (circleCollider != null && CurrentMaterialData.PhysicsMaterial != null &&
+                circleCollider.sharedMaterial != CurrentMaterialData.PhysicsMaterial)
             {
-                return;
+                circleCollider.sharedMaterial = CurrentMaterialData.PhysicsMaterial;
             }
 
-            circleCollider.sharedMaterial = CurrentMaterialData.PhysicsMaterial;
+            if (spriteRenderer != null && CurrentMaterialData.Sprite != null)
+            {
+                spriteRenderer.sprite = CurrentMaterialData.Sprite;
+            }
         }
     }
 }

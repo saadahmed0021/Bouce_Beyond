@@ -7,6 +7,7 @@ namespace MaterialShift
     {
         [SerializeField] private Material_Type materialType;
         [SerializeField] private PhysicsMaterial2D physicsMaterial;
+        [SerializeField] private Sprite sprite;
 
         [Min(0f)]
         [SerializeField] private float movementMultiplier = 1f;
@@ -25,6 +26,7 @@ namespace MaterialShift
 
         public Material_Type MaterialType => materialType;
         public PhysicsMaterial2D PhysicsMaterial => physicsMaterial;
+        public Sprite Sprite => sprite;
         public float MovementMultiplier => movementMultiplier;
         public float MaxSpeedMultiplier => maxSpeedMultiplier;
         public float AccelerationMultiplier => accelerationMultiplier;

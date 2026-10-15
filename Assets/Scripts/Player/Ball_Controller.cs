@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 namespace MaterialShift.Player
@@ -13,9 +14,6 @@ namespace MaterialShift.Player
         [Header("Air Control")]
         [SerializeField] private float airControlMultiplier = 0.65f;
 
-        [Header("Rolling")]
-        [SerializeField] private float rotationFactor = 1.25f;
-
         private Rigidbody2D ballRigidbody;
         private Ball_Input ballInput;
         private Ball_Material_Controller ballMaterialController;
@@ -30,39 +28,47 @@ namespace MaterialShift.Player
         private void FixedUpdate()
         {
             float input = ballInput != null ? ballInput.MoveInput : 0f;
+
             float movementMultiplier = ballMaterialController != null
-                ? ballMaterialController.CurrentMovementMultiplier
-                : 1f;
+                ? ballMaterialController.CurrentMovementMultiplier : 1f;
+
             float maxSpeedMultiplier = ballMaterialController != null
-                ? ballMaterialController.CurrentMaxSpeedMultiplier
-                : 1f;
+                ? ballMaterialController.CurrentMaxSpeedMultiplier : 1f;
+
             float accelerationMultiplier = ballMaterialController != null
-                ? ballMaterialController.CurrentAccelerationMultiplier
-                : 1f;
+                ? ballMaterialController.CurrentAccelerationMultiplier : 1f;
+
             float decelerationMultiplier = ballMaterialController != null
-                ? ballMaterialController.CurrentDecelerationMultiplier
-                : 1f;
-            float effectiveMaximumSpeed = maximumSpeed * maxSpeedMultiplier;
-            float targetSpeed = input * effectiveMaximumSpeed * airControlMultiplier * movementMultiplier;
-            float horizontalVelocity = ballRigidbody.linearVelocity.x;
+                ? ballMaterialController.CurrentDecelerationMultiplier : 1f;
 
-            if (Mathf.Abs(input) > 0.01f)
-            {
-                horizontalVelocity = Mathf.MoveTowards(
-                    horizontalVelocity,
-                    targetSpeed,
-                    acceleration * accelerationMultiplier * Time.fixedDeltaTime);
-            }
-            else
-            {
-                horizontalVelocity = Mathf.MoveTowards(
-                    horizontalVelocity,
-                    0f,
-                    deceleration * decelerationMultiplier * Time.fixedDeltaTime);
-            }
+            float controlMultiplier = IsGrounded()
+                ? 1f
+                : airControlMultiplier;
 
-            ballRigidbody.linearVelocity = new Vector2(horizontalVelocity, ballRigidbody.linearVelocity.y);
-            ballRigidbody.angularVelocity = -horizontalVelocity * rotationFactor;
+            float targetSpeed = input * maximumSpeed
+                * maxSpeedMultiplier * movementMultiplier;
+
+            Vector2 velocity = ballRigidbody.linearVelocity;
+
+            float targetX = Mathf.MoveTowards(
+                velocity.x,
+                Mathf.Abs(input) > 0.01f ? targetSpeed : 0f,
+                (Mathf.Abs(input) > 0.01f
+                    ? acceleration * accelerationMultiplier
+                    : deceleration * decelerationMultiplier)
+                * controlMultiplier
+                * Time.fixedDeltaTime
+            );
+
+            ballRigidbody.linearVelocity = new Vector2(
+                targetX,
+                velocity.y
+            );
+        }
+
+        private bool IsGrounded()
+        {
+            return Mathf.Abs(ballRigidbody.linearVelocity.y) < 0.15f;
         }
     }
 }
