@@ -12,30 +12,50 @@ namespace MaterialShift.Player
 
         public bool JumpInput { get; private set; }
 
+        private bool mobileLeftHeld;
+        private bool mobileRightHeld;
+        private bool mobileJumpHeld;
+
+        public void SetMobileLeftHeld(bool isHeld)
+        {
+            mobileLeftHeld = isHeld;
+        }
+
+        public void SetMobileRightHeld(bool isHeld)
+        {
+            mobileRightHeld = isHeld;
+        }
+
+        public void SetMobileJumpHeld(bool isHeld)
+        {
+            mobileJumpHeld = isHeld;
+        }
+
         private void Update()
         {
             Keyboard keyboard = Keyboard.current;
+            float keyboardMove = 0f;
+            bool keyboardJump = false;
 
-            if (keyboard == null)
+            if (keyboard != null)
             {
-                MoveInput = 0f;
-                JumpInput = false;
-                return;
+                if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed)
+                {
+                    keyboardMove -= 1f;
+                }
+
+                if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed)
+                {
+                    keyboardMove += 1f;
+                }
+
+                keyboardJump = keyboard.spaceKey.isPressed;
             }
 
-            MoveInput = 0f;
-
-            if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed)
-            {
-                MoveInput -= 1f;
-            }
-
-            if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed)
-            {
-                MoveInput += 1f;
-            }
-
-            JumpInput = keyboard.spaceKey.isPressed;
+            float mobileMove = (mobileRightHeld ? 1f : 0f)
+                - (mobileLeftHeld ? 1f : 0f);
+            MoveInput = Mathf.Clamp(keyboardMove + mobileMove, -1f, 1f);
+            JumpInput = keyboardJump || mobileJumpHeld;
         }
     }
 }

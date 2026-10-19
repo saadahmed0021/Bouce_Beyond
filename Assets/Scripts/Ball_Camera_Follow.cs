@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class Ball_Camera_Follow : MonoBehaviour
@@ -11,10 +10,18 @@ public class Ball_Camera_Follow : MonoBehaviour
     [SerializeField] private float rightThreshold = 4f;
     [SerializeField] private float horizontalSmoothTime = 0.08f;
 
+    [Header("Horizontal Bounds")]
+    [SerializeField] private float minimumX = 5f;
+    [SerializeField] private float maximumX = 600f;
+
     [Header("Vertical Thresholds")]
     [SerializeField] private float bottomThreshold = -3f;
     [SerializeField] private float topThreshold = 3f;
     [SerializeField] private float verticalSmoothTime = 0.12f;
+
+    [Header("Vertical Bounds")]
+    [SerializeField] private float minimumY = 5f;
+    [SerializeField] private float maximumY = 600f;
 
     [Header("Follow Axes")]
     [SerializeField] private bool followX = true;
@@ -77,6 +84,9 @@ public class Ball_Camera_Follow : MonoBehaviour
                 Mathf.Infinity,
                 Time.unscaledDeltaTime)
             : cameraPosition.y;
+
+        newX = Mathf.Clamp(newX, minimumX, maximumX);
+        newY = Mathf.Clamp(newY, minimumY, maximumY);
 
         transform.position = new Vector3(
             newX,

@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MaterialShift.Ball_Material_Data
   materialType: 1
   physicsMaterial: {fileID: 6200000, guid: 89a29e753047241438513f8a3e2efda0, type: 2}
-  sprite: {fileID: 21300000, guid: 4b03271ebb4e4974a8718f9a34413e33, type: 3}
-  movementMultiplier: 0.5
+  sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  mass: 3
+  movementMultiplier: 0.6
   maxSpeedMultiplier: 0.5
   accelerationMultiplier: 0.5
   decelerationMultiplier: 0.5
-  jumpMultiplier: 0.8
+  jumpMultiplier: 0.7

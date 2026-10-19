@@ -2,12 +2,14 @@ using UnityEngine;
 
 namespace MaterialShift
 {
+    [RequireComponent(typeof(Rigidbody2D))]
     public class Ball_Material_Controller : MonoBehaviour
     {
         [SerializeField] private Ball_Material_Data currentMaterialData;
         [SerializeField] private Ball_Material_Data[] availableMaterialData;
 
         private CircleCollider2D circleCollider;
+        private Rigidbody2D ballRigidbody;
         private SpriteRenderer spriteRenderer;
 
         public Ball_Material_Data CurrentMaterialData { get; private set; }
@@ -20,6 +22,7 @@ namespace MaterialShift
 
         private void Awake()
         {
+            ballRigidbody = GetComponent<Rigidbody2D>();
             circleCollider = GetComponent<CircleCollider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             CurrentMaterialData = currentMaterialData;
@@ -63,6 +66,11 @@ namespace MaterialShift
             if (CurrentMaterialData == null)
             {
                 return;
+            }
+
+            if (ballRigidbody != null)
+            {
+                ballRigidbody.mass = Mathf.Max(0.0001f, CurrentMaterialData.Mass);
             }
 
             if (circleCollider != null && CurrentMaterialData.PhysicsMaterial != null &&

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MaterialShift.Player
 {
@@ -6,7 +7,8 @@ namespace MaterialShift.Player
     {
         [Header("Ground Check")]
         [SerializeField] private Transform groundCheckPoint;
-        [SerializeField] private float groundCheckRadius = 0.15f;
+        [FormerlySerializedAs("groundCheckRadius")]
+        [SerializeField] private float groundCheckDistance = 0.15f;
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private bool isGrounded;
 
@@ -14,10 +16,11 @@ namespace MaterialShift.Player
 
         private void FixedUpdate()
         {
-            isGrounded = Physics2D.OverlapCircle(
+            isGrounded = groundCheckPoint != null && Physics2D.Raycast(
                 groundCheckPoint.position,
-                groundCheckRadius,
-                groundLayer) != null;
+                Vector2.down,
+                groundCheckDistance,
+                groundLayer);
         }
 
         private void OnDrawGizmosSelected()
@@ -28,7 +31,8 @@ namespace MaterialShift.Player
             }
 
             Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckRadius);
+            Vector3 checkPoint = groundCheckPoint.position;
+            Gizmos.DrawLine(checkPoint, checkPoint + Vector3.down * groundCheckDistance);
         }
     }
 }
